@@ -8,11 +8,9 @@ from pathlib import Path
 import re
 import sys
 
+from retained_zh_tw import retained_reason
+
 LOCALE_DIR = Path('packages/frontend/@n8n/i18n/src/locales')
-KEEP_ENGLISH = {
-    ('generic.enterprise',), ('generic.pro',), ('about.n8nLicense',),
-    ('aiAssistant.name',),
-}
 PLACEHOLDER = re.compile(r"\{[^{}]*\}")
 REFERENCE = re.compile(r"@(?:\.[A-Za-z]+)?:[A-Za-z0-9_.-]+")
 CODE = re.compile(r'`[^`]+`|<code\b[^>]*>.*?</code>', re.S)
@@ -71,7 +69,6 @@ class Markup(HTMLParser):
         self.events = []
 
     def attributes(self, attrs):
-        # 可翻譯 title 等顯示文字；不得改寫 href、target、class 或事件屬性。
         return tuple(sorted((key, None if key in TRANSLATABLE_ATTRIBUTES else value)
                             for key, value in attrs))
 
@@ -99,7 +96,6 @@ def markup(text):
 
 
 def branches(text):
-    # Vue i18n 的字面值 {'|'} 不得被誤判為複數分隔符號。
     masked = PLACEHOLDER.sub(lambda m: m.group().replace('|', '\x00'), text)
     return [part.replace('\x00', '|') for part in masked.split('|')]
 
@@ -138,16 +134,15 @@ def inspect(source, target):
     original, translated = leaves(source), leaves(target)
     missing = sorted(set(original) - set(translated))
     extra = sorted(set(translated) - set(original))
-    errors = []
-    untranslated = []
-    kept = []
-    changed = []
+    errors, untranslated, kept, changed = [], [], [], []
     for key in sorted(set(original) & set(translated)):
         left, right = original[key], translated[key]
         errors.extend({'key': label(key), 'problem': problem}
                       for problem in structural_errors(left, right))
-        if right == left and (key in KEEP_ENGLISH or not has_visible_english(left)):
-            kept.append(key)
+        reason = retained_reason(key, left)
+        if right == left and (reason or not has_visible_english(left)):
+            kept.append({'key': label(key), 'source': left,
+                         'reason': reason or '共用文字參照、插值、程式碼或不含可翻譯英文的格式'})
         elif right == left or (not CJK.search(right) and has_visible_english(right)):
             untranslated.append(key)
         else:
@@ -168,6 +163,7 @@ def inspect(source, target):
         'untranslated_or_review': [label(key) for key in untranslated],
         'extra': [label(key) for key in extra],
         'structural_errors': errors,
+        'retained': kept,
     }
 
 
@@ -191,7 +187,7 @@ def main(argv=None):
             args.report.parent.mkdir(parents=True, exist_ok=True)
             args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print(json.dumps({k: v for k, v in report.items()
-                          if k not in {'missing', 'untranslated_or_review', 'extra', 'structural_errors'}},
+                          if k not in {'missing', 'untranslated_or_review', 'extra', 'structural_errors', 'retained'}},
                          ensure_ascii=False, indent=2))
         for item in report['structural_errors'][:30]:
             print(f"ERROR {item['key']}: {item['problem']}", file=sys.stderr)
