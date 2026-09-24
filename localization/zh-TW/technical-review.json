@@ -1,452 +1,61 @@
 [
-	{
-		"key": [
-			"generic.enterprise"
-		],
-		"source": "Enterprise"
-	},
-	{
-		"key": [
-			"generic.pro"
-		],
-		"source": "Pro"
-	},
-	{
-		"key": [
-			"about.n8nLicense"
-		],
-		"source": "Sustainable Use License + n8n Enterprise License"
-	},
-	{
-		"key": [
-			"aiAssistant.name"
-		],
-		"source": "n8n AI"
-	},
-	{
-		"key": [
-			"aiAssistant.tooltip"
-		],
-		"source": "n8n AI"
-	},
-	{
-		"key": [
-			"chatEmbed.paste.vue.file"
-		],
-		"source": "App.vue"
-	},
-	{
-		"key": [
-			"chatEmbed.paste.react.file"
-		],
-		"source": "App.ts"
-	},
-	{
-		"key": [
-			"chatEmbed.paste.other.file"
-		],
-		"source": "main.ts"
-	},
-	{
-		"key": [
-			"credentialEdit.credentialConfig.jwksUri.label"
-		],
-		"source": "OAuth2 JWKS URI"
-	},
-	{
-		"key": [
-			"credentialEdit.credentialInfo.id"
-		],
-		"source": "ID"
-	},
-	{
-		"key": [
-			"agentSessions.timeline.id"
-		],
-		"source": "ID"
-	},
-	{
-		"key": [
-			"executionsFilter.savedDataKeyPlaceholder"
-		],
-		"source": "ID"
-	},
-	{
-		"key": [
-			"expressionModalInput.null"
-		],
-		"source": "null"
-	},
-	{
-		"key": [
-			"nodeCreator.noResults.webhook"
-		],
-		"source": "Webhook"
-	},
-	{
-		"key": [
-			"nodeCreator.aiPanel.langchainAiNodes"
-		],
-		"source": "AI"
-	},
-	{
-		"key": [
-			"aiGateway.topUp.modal.service.brave"
-		],
-		"source": "Brave Search"
-	},
-	{
-		"key": [
-			"nodeWebhooks.webhookUrls.mcpTrigger"
-		],
-		"source": "MCP URL"
-	},
-	{
-		"key": [
-			"personalizationModal.cicd"
-		],
-		"source": "CI/CD"
-	},
-	{
-		"key": [
-			"personalizationModal.hr"
-		],
-		"source": "HR"
-	},
-	{
-		"key": [
-			"personalizationModal.it"
-		],
-		"source": "IT"
-	},
-	{
-		"key": [
-			"runData.json"
-		],
-		"source": "JSON"
-	},
-	{
-		"key": [
-			"runData.aiContentBlock.tokens"
-		],
-		"source": "{count} Tokens"
-	},
-	{
-		"key": [
-			"settings.mcp.connectDialog.category.web"
-		],
-		"source": "Web"
-	},
-	{
-		"key": [
-			"settings.mcp.oAuthClients.filters.clientType.web"
-		],
-		"source": "Web"
-	},
-	{
-		"key": [
-			"experiments.surfaceMcpToNewCloudUsers.onboarding.client.claude"
-		],
-		"source": "Claude"
-	},
-	{
-		"key": [
-			"experiments.surfaceMcpToNewCloudUsers.onboarding.client.claudeCode"
-		],
-		"source": "Claude Code"
-	},
-	{
-		"key": [
-			"experiments.surfaceMcpToNewCloudUsers.onboarding.client.cursor"
-		],
-		"source": "Cursor"
-	},
-	{
-		"key": [
-			"experiments.surfaceMcpToNewCloudUsers.onboarding.client.codex"
-		],
-		"source": "Codex"
-	},
-	{
-		"key": [
-			"experiments.surfaceMcpToNewCloudUsers.onboarding.client.chatgpt"
-		],
-		"source": "ChatGPT"
-	},
-	{
-		"key": [
-			"experiments.surfaceMcpToNewCloudUsers.onboarding.section.chatgptCustomApp.appName.value"
-		],
-		"source": "n8n"
-	},
-	{
-		"key": [
-			"settings.users.table.header.2fa"
-		],
-		"source": "2FA"
-	},
-	{
-		"key": [
-			"settings.api"
-		],
-		"source": "API"
-	},
-	{
-		"key": [
-			"settings.n8napi"
-		],
-		"source": "n8n API"
-	},
-	{
-		"key": [
-			"settings.log-streaming.$$MessageEventBusDestinationWebhook"
-		],
-		"source": "Webhook"
-	},
-	{
-		"key": [
-			"settings.log-streaming.$$MessageEventBusDestinationSentry"
-		],
-		"source": "Sentry"
-	},
-	{
-		"key": [
-			"settings.log-streaming.$$MessageEventBusDestinationRedis"
-		],
-		"source": "Redis"
-	},
-	{
-		"key": [
-			"settings.log-streaming.$$MessageEventBusDestinationSyslog"
-		],
-		"source": "Syslog"
-	},
-	{
-		"key": [
-			"settings.usageAndPlan.dialog.eula.link.text"
-		],
-		"source": "EULA"
-	},
-	{
-		"key": [
-			"settings.sourceControl.sshRepoUrlPlaceholder"
-		],
-		"source": "git{'@'}github.com:user/repository.git"
-	},
-	{
-		"key": [
-			"ndv.render.markdown"
-		],
-		"source": "Markdown"
-	},
-	{
-		"key": [
-			"credentialResolverEdit.details.id"
-		],
-		"source": "ID"
-	},
-	{
-		"key": [
-			"instanceAi.onboarding.model.baseUrl"
-		],
-		"source": "Base URL"
-	},
-	{
-		"key": [
-			"settings.n8nAgent.permissions.group.web"
-		],
-		"source": "Web"
-	},
-	{
-		"key": [
-			"settings.ldap"
-		],
-		"source": "LDAP"
-	},
-	{
-		"key": [
-			"settings.ldap.form.baseDn.placeholder"
-		],
-		"source": "o=acme,dc=example,dc=com"
-	},
-	{
-		"key": [
-			"settings.ldap.form.adminDn.placeholder"
-		],
-		"source": "uid=2da2de69435c,ou=Users,o=Acme,dc=com"
-	},
-	{
-		"key": [
-			"settings.ldap.form.userFilter.placeholder"
-		],
-		"source": "(ObjectClass=user)"
-	},
-	{
-		"key": [
-			"settings.ldap.form.ldapId.label"
-		],
-		"source": "ID"
-	},
-	{
-		"key": [
-			"settings.ldap.form.ldapId.placeholder"
-		],
-		"source": "uid"
-	},
-	{
-		"key": [
-			"settings.ldap.form.loginId.placeholder"
-		],
-		"source": "mail"
-	},
-	{
-		"key": [
-			"settings.ldap.form.email.placeholder"
-		],
-		"source": "mail"
-	},
-	{
-		"key": [
-			"settings.ldap.form.firstName.placeholder"
-		],
-		"source": "givenName"
-	},
-	{
-		"key": [
-			"settings.ldap.form.lastName.placeholder"
-		],
-		"source": "sn"
-	},
-	{
-		"key": [
-			"settings.sso"
-		],
-		"source": "SSO"
-	},
-	{
-		"key": [
-			"settings.sso.settings.entityId.label"
-		],
-		"source": "Entity ID URL"
-	},
-	{
-		"key": [
-			"settings.sso.settings.ips.options.xml"
-		],
-		"source": "XML"
-	},
-	{
-		"key": [
-			"settings.sso.settings.roleMappingRules.expression.placeholder"
-		],
-		"source": "$claims.groups.includes('admins')"
-	},
-	{
-		"key": [
-			"settings.mfa"
-		],
-		"source": "MFA"
-	},
-	{
-		"key": [
-			"setupPanel.webhookUrl.title"
-		],
-		"source": "Webhook URL"
-	},
-	{
-		"key": [
-			"instanceAi.debug.runDebug.json"
-		],
-		"source": "JSON"
-	},
-	{
-		"key": [
-			"instanceAi.filesystem.category.shell"
-		],
-		"source": "Shell"
-	},
-	{
-		"key": [
-			"agents.builder.advanced.webSearch.fallbackProvider.brave"
-		],
-		"source": "Brave Search"
-	},
-	{
-		"key": [
-			"agents.builder.advanced.webSearch.fallbackProvider.searxng"
-		],
-		"source": "SearXNG"
-	},
-	{
-		"key": [
-			"agents.builder.files.type.csv"
-		],
-		"source": "CSV"
-	},
-	{
-		"key": [
-			"agents.builder.files.type.pdf"
-		],
-		"source": "PDF"
-	},
-	{
-		"key": [
-			"agents.builder.files.type.markdown"
-		],
-		"source": "Markdown"
-	},
-	{
-		"key": [
-			"agents.builder.files.type.txt"
-		],
-		"source": "TXT"
-	},
-	{
-		"key": [
-			"agents.builder.files.size.bytes"
-		],
-		"source": "{bytes} B"
-	},
-	{
-		"key": [
-			"agents.builder.files.size.kilobytes"
-		],
-		"source": "{kilobytes} KB"
-	},
-	{
-		"key": [
-			"agents.builder.files.size.megabytes"
-		],
-		"source": "{megabytes} MB"
-	},
-	{
-		"key": [
-			"agents.builder.addTrigger.linear.webhookUrl.label"
-		],
-		"source": "Webhook URL"
-	},
-	{
-		"key": [
-			"instanceAi.welcomeModal.gateway.os.mac"
-		],
-		"source": "Mac"
-	},
-	{
-		"key": [
-			"instanceAi.welcomeModal.gateway.os.windows"
-		],
-		"source": "Windows"
-	},
-	{
-		"key": [
-			"instanceAi.welcomeModal.gateway.os.linux"
-		],
-		"source": "Linux"
-	},
-	{
-		"key": [
-			"tools.connection.categories.ai"
-		],
-		"source": "AI"
-	}
+{"key": ["generic.enterprise"], "source": "Enterprise"},
+{"key": ["generic.pro"], "source": "Pro"},
+{"key": ["about.n8nLicense"], "source": "Sustainable Use License + n8n Enterprise License"},
+{"key": ["aiAssistant.name"], "source": "n8n AI"},
+{"key": ["aiAssistant.tooltip"], "source": "n8n AI"},
+{"key": ["chatEmbed.paste.vue.file"], "source": "App.vue"},
+{"key": ["chatEmbed.paste.react.file"], "source": "App.ts"},
+{"key": ["chatEmbed.paste.other.file"], "source": "main.ts"},
+{"key": ["credentialEdit.credentialConfig.jwksUri.label"], "source": "OAuth2 JWKS URI"},
+{"key": ["credentialEdit.credentialInfo.id"], "source": "ID"},
+{"key": ["agentSessions.timeline.id"], "source": "ID"},
+{"key": ["executionsFilter.savedDataKeyPlaceholder"], "source": "ID"},
+{"key": ["expressionModalInput.null"], "source": "null"},
+{"key": ["nodeCreator.noResults.webhook"], "source": "Webhook"},
+{"key": ["nodeCreator.aiPanel.langchainAiNodes"], "source": "AI"},
+{"key": ["aiGateway.topUp.modal.service.brave"], "source": "Brave Search"},
+{"key": ["personalizationModal.cicd"], "source": "CI/CD"},
+{"key": ["runData.json"], "source": "JSON"},
+{"key": ["experiments.surfaceMcpToNewCloudUsers.onboarding.client.claude"], "source": "Claude"},
+{"key": ["experiments.surfaceMcpToNewCloudUsers.onboarding.client.claudeCode"], "source": "Claude Code"},
+{"key": ["experiments.surfaceMcpToNewCloudUsers.onboarding.client.cursor"], "source": "Cursor"},
+{"key": ["experiments.surfaceMcpToNewCloudUsers.onboarding.client.codex"], "source": "Codex"},
+{"key": ["experiments.surfaceMcpToNewCloudUsers.onboarding.client.chatgpt"], "source": "ChatGPT"},
+{"key": ["experiments.surfaceMcpToNewCloudUsers.onboarding.section.chatgptCustomApp.appName.value"], "source": "n8n"},
+{"key": ["settings.api"], "source": "API"},
+{"key": ["settings.n8napi"], "source": "n8n API"},
+{"key": ["settings.log-streaming.$$MessageEventBusDestinationWebhook"], "source": "Webhook"},
+{"key": ["settings.log-streaming.$$MessageEventBusDestinationSentry"], "source": "Sentry"},
+{"key": ["settings.log-streaming.$$MessageEventBusDestinationRedis"], "source": "Redis"},
+{"key": ["settings.log-streaming.$$MessageEventBusDestinationSyslog"], "source": "Syslog"},
+{"key": ["settings.sourceControl.sshRepoUrlPlaceholder"], "source": "git{'@'}github.com:user/repository.git"},
+{"key": ["ndv.render.markdown"], "source": "Markdown"},
+{"key": ["credentialResolverEdit.details.id"], "source": "ID"},
+{"key": ["settings.ldap"], "source": "LDAP"},
+{"key": ["settings.ldap.form.baseDn.placeholder"], "source": "o=acme,dc=example,dc=com"},
+{"key": ["settings.ldap.form.adminDn.placeholder"], "source": "uid=2da2de69435c,ou=Users,o=Acme,dc=com"},
+{"key": ["settings.ldap.form.userFilter.placeholder"], "source": "(ObjectClass=user)"},
+{"key": ["settings.ldap.form.ldapId.label"], "source": "ID"},
+{"key": ["settings.ldap.form.ldapId.placeholder"], "source": "uid"},
+{"key": ["settings.ldap.form.loginId.placeholder"], "source": "mail"},
+{"key": ["settings.ldap.form.email.placeholder"], "source": "mail"},
+{"key": ["settings.ldap.form.firstName.placeholder"], "source": "givenName"},
+{"key": ["settings.ldap.form.lastName.placeholder"], "source": "sn"},
+{"key": ["settings.sso.settings.ips.options.xml"], "source": "XML"},
+{"key": ["settings.sso.settings.roleMappingRules.expression.placeholder"], "source": "$claims.groups.includes('admins')"},
+{"key": ["instanceAi.debug.runDebug.json"], "source": "JSON"},
+{"key": ["agents.builder.advanced.webSearch.fallbackProvider.brave"], "source": "Brave Search"},
+{"key": ["agents.builder.advanced.webSearch.fallbackProvider.searxng"], "source": "SearXNG"},
+{"key": ["agents.builder.files.type.csv"], "source": "CSV"},
+{"key": ["agents.builder.files.type.pdf"], "source": "PDF"},
+{"key": ["agents.builder.files.type.markdown"], "source": "Markdown"},
+{"key": ["agents.builder.files.type.txt"], "source": "TXT"},
+{"key": ["agents.builder.files.size.bytes"], "source": "{bytes} B"},
+{"key": ["agents.builder.files.size.kilobytes"], "source": "{kilobytes} KB"},
+{"key": ["agents.builder.files.size.megabytes"], "source": "{megabytes} MB"},
+{"key": ["instanceAi.welcomeModal.gateway.os.mac"], "source": "Mac"},
+{"key": ["instanceAi.welcomeModal.gateway.os.windows"], "source": "Windows"},
+{"key": ["instanceAi.welcomeModal.gateway.os.linux"], "source": "Linux"},
+{"key": ["tools.connection.categories.ai"], "source": "AI"}
 ]
