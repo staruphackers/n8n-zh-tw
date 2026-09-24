@@ -1,0 +1,55 @@
+name: zh-TW localization structure (not release certification)
+
+on:
+  push:
+    branches: [localize/zh-tw-ui]
+    paths:
+      - 'packages/frontend/@n8n/i18n/**'
+      - 'scripts/i18n/**'
+      - '.github/workflows/zh-tw-localization.yml'
+  pull_request:
+    paths:
+      - 'packages/frontend/@n8n/i18n/**'
+      - 'scripts/i18n/**'
+      - '.github/workflows/zh-tw-localization.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zh-tw-localization-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  structure:
+    name: Partial-locale structural checks only
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Test validation rules
+        run: python3 -m unittest discover -s scripts/i18n -p 'test_*.py' -v
+      - name: Check translated keys against complete English source
+        run: python3 scripts/i18n/validate_zh_tw.py --allow-partial --report /tmp/zh-tw-report.json
+      - name: Report coverage without claiming completion
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          path = Path('/tmp/zh-tw-report.json')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as output:
+              output.write('## 繁中語言包結構檢查\n\n')
+              output.write('這不是完整翻譯、前端建置、瀏覽器測試或部署的合格證明。\n\n')
+              if path.exists():
+                  report = json.loads(path.read_text(encoding='utf-8'))
+                  for key in ['source_leaf_count', 'provided_leaf_count', 'changed_or_localized_count', 'retained_technical_or_reference_count', 'missing_count', 'untranslated_or_review_count', 'extra_count', 'structural_error_count', 'base_text_complete', 'production_ready']:
+                      output.write(f'- {key}: `{report[key]}`\n')
+              else:
+                  output.write('尚無驗證報告；請查看前面的錯誤記錄。\n')
+          PY
