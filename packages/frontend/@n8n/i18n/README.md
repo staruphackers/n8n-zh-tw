@@ -1,27 +1,60 @@
 # @n8n/i18n
 
-A package for managing internationalization (i18n) in n8n's Frontend codebase. It provides a structured way to handle translations and localization, ensuring that the application can be easily adapted to different languages and regions.
+這個套件負責管理 n8n 前端程式碼的國際化（i18n）。它提供有結構的翻譯與在地化方式，讓應用程式能適應不同語言與地區。
 
-## Table of Contents
+## 目錄
 
-- [Features](#features)
-- [Contributing](#contributing)
-- [License](#license)
+- [功能](#功能)
+- [繁體中文台灣](#繁體中文台灣)
+- [驗證翻譯](#驗證翻譯)
+- [參與貢獻](#參與貢獻)
+- [授權](#授權)
 
-## Features
+## 功能
 
-- **Translation Management**: Simplifies the process of managing translations for different languages.
-- **Localization Support**: Provides tools to adapt the application for different regions and cultures.
-- **Easy Integration**: Seamlessly integrates with n8n's Frontend codebase, making it easy to implement and use.
-- **Reusable Base Text**: Allows for the definition of reusable base text strings, reducing redundancy in translations.
-- **Pluralization and Interpolation**: Supports pluralization and interpolation in base text strings, making it flexible for various use cases.
-- **Versioned Nodes Support**: Facilitates the management of translations for nodes in versioned directories, ensuring consistency across different versions.
-- **Documentation**: Comprehensive documentation to help developers understand and utilize the package effectively.
+- **翻譯管理**：簡化多語言翻譯內容的維護流程。
+- **在地化支援**：提供工具，協助應用程式適應不同地區與文化。
+- **易於整合**：與 n8n 前端程式碼整合，方便實作及使用。
+- **可重複使用的基礎字串**：共用基礎顯示文字，減少重複翻譯。
+- **複數與插值**：基礎字串支援複數分支與變數插值，適用於不同情境。
+- **版本化節點支援**：協助管理版本化目錄中的節點翻譯，維持跨版本的一致性。
+- **技術文件**：提供文件，協助開發者瞭解與使用套件。
 
-## Contributing
+## 繁體中文（台灣）
 
-For more details, please read our [CONTRIBUTING.md](CONTRIBUTING.md).
+本分支新增 `src/locales/zh-TW.json`，並在 `src/index.ts` 註冊 `zh-TW` 語言訊息。預設語言與缺少翻譯時的備援語言仍為英文，原有執行、驗證、API 與權限邏輯不變。
 
-## License
+**目前是部分翻譯，尚未完成全部基礎字串、節點、憑證及元件的繁體中文化；不能視為可直接上線的完整語言包。**
 
-For more details, please read our [LICENSE.md](LICENSE.md).
+基礎字串、節點欄位與憑證欄位使用不同的翻譯來源。只新增基礎語言檔，不代表所有節點表單也會一起翻譯。其他原生翻譯機制請參閱 [i18n 技術文件](docs/README.md) 與[補充說明](docs/ADDENDUM.md)。
+
+繁中字串只改顯示內容，不改鍵名、程式識別字、選項值、插值變數、運算式、網址或使用者資料。API、JSON、HTTP、MCP、Webhook 等技術名稱可保留英文。
+
+## 驗證翻譯
+
+以下命令請在儲存庫根目錄執行，使用 Python 3 標準函式庫，不需要連網或啟動 n8n：
+
+```sh
+# 測試驗證器本身
+python3 -m unittest discover -s scripts/i18n -p 'test_*.py' -v
+
+# 檢查目前已翻譯項目的鍵名、插值、複數分支、HTML、網址與程式碼片段
+python3 scripts/i18n/validate_zh_tw.py --allow-partial --report /tmp/n8n-zh-tw-report.json
+
+# 完整基礎字串檢查：缺少翻譯或仍需審閱時會回傳非零狀態
+python3 scripts/i18n/validate_zh_tw.py
+```
+
+`--allow-partial` 的通過結果只代表已提供字串的結構檢查通過，**不代表完整翻譯，也不代表語意、簡繁用字、瀏覽器顯示或正式部署均已驗收**。
+
+檢查工具會揭露上游英文檔的重複鍵，並沿用原本 JSON 解析時的後值優先行為，不修改英文原檔。繁中目標檔的重複鍵仍一律視為錯誤。
+
+部署基準、共享主機限制及待完成事項請參閱[繁體中文在地化說明](../../../../docs/localization/zh-TW.md)。
+
+## 參與貢獻
+
+請閱讀儲存庫根目錄的[貢獻指南](../../../../CONTRIBUTING.md)。新增翻譯時，請確認使用同一版本的英文原文與節點描述，保留所有程式識別內容，並完成結構檢查與實際介面測試。
+
+## 授權
+
+請閱讀儲存庫根目錄的[授權條款](../../../../LICENSE.md)。本在地化工作不變更 n8n 原有授權；企業版內容仍受其原有授權條款規範。
