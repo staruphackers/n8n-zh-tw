@@ -1,0 +1,18 @@
+{
+	"personalizationModal.hr": "人力資源",
+	"personalizationModal.it": "資訊技術",
+	"runData.aiContentBlock.tokens": "{count} 個 token",
+	"settings.mcp.connectDialog.category.web": "網頁",
+	"settings.mcp.oAuthClients.filters.clientType.web": "網頁",
+	"settings.users.table.header.2fa": "雙重驗證",
+	"settings.usageAndPlan.dialog.eula.link.text": "終端使用者授權合約（EULA）",
+	"instanceAi.onboarding.model.baseUrl": "基礎 URL",
+	"settings.n8nAgent.permissions.group.web": "網頁",
+	"settings.sso": "單一登入（SSO）",
+	"settings.sso.settings.entityId.label": "實體識別碼 URL",
+	"settings.mfa": "多因素驗證（MFA）",
+	"instanceAi.filesystem.category.shell": "Shell 指令碼",
+	"nodeWebhooks.webhookUrls.mcpTrigger": "MCP 網址",
+	"setupPanel.webhookUrl.title": "Webhook 網址",
+	"agents.builder.addTrigger.linear.webhookUrl.label": "Webhook 網址"
+}
