@@ -5,9 +5,7 @@ on:
     branches: [localize/zh-tw-ui]
     paths:
       - '.github/workflows/zh-tw-dictionary-build.yml'
-      - 'scripts/i18n/import_mit_dictionary.py'
-      - 'scripts/i18n/runtime_smoke.cjs'
-      - 'scripts/i18n/requirements-conversion.txt'
+      - 'scripts/i18n/**'
       - 'localization/zh-TW/overrides.json'
       - 'localization/zh-TW/patches/**'
   workflow_dispatch:
@@ -23,15 +21,15 @@ jobs:
   dictionary:
     if: github.repository == 'staruphackers/n8n-zh-tw' && github.ref == 'refs/heads/localize/zh-tw-ui'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     permissions:
-      contents: write # 僅上傳下方白名單檔案的 Git blob；不移動分支、不建立 PR、不部署。
+      contents: write # 僅上傳白名單中的翻譯 Git blob，不修改分支或部署。
     steps:
       - name: Checkout without persisted credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
-      - name: Install hash-pinned conversion tool in an isolated environment
+      - name: Install hash-pinned conversion tool
         run: |
           python3 -m venv /tmp/zh-tw-tools
           /tmp/zh-tw-tools/bin/python -m pip install --require-hashes --only-binary=:all: --no-deps -r scripts/i18n/requirements-conversion.txt
@@ -39,6 +37,12 @@ jobs:
         run: /tmp/zh-tw-tools/bin/python -m unittest discover -s scripts/i18n -p 'test_*.py' -v
       - name: Build candidates from immutable MIT data only
         run: /tmp/zh-tw-tools/bin/python scripts/i18n/import_mit_dictionary.py --output /tmp/zh-tw-candidates --cache /tmp/zh-tw-source-cache
+      - name: Require complete base text
+        run: |
+          cp /tmp/zh-tw-candidates/packages/frontend/@n8n/i18n/src/locales/zh-TW.json packages/frontend/@n8n/i18n/src/locales/zh-TW.json
+          python3 scripts/i18n/validate_zh_tw.py
+      - name: Generate native candidates from exact-version static metadata
+        run: /tmp/zh-tw-tools/bin/python scripts/i18n/generate_native_zh_tw.py --output /tmp/zh-tw-candidates
       - name: Format review queues without changing values
         run: |
           python3 - <<'PY'
@@ -47,18 +51,17 @@ jobs:
           for name in ['missing-base.json', 'technical-review.json']:
               path = Path('/tmp/zh-tw-candidates/localization/zh-TW') / name
               entries = json.loads(path.read_text(encoding='utf-8'))
-              text = '[\n' + ',\n'.join(json.dumps(item, ensure_ascii=False) for item in entries) + '\n]\n'
-              path.write_text(text, encoding='utf-8')
+              path.write_text('[\n' + ',\n'.join(json.dumps(item, ensure_ascii=False) for item in entries) + '\n]\n', encoding='utf-8')
           PY
       - name: Install isolated compatible frontend test dependencies
         run: |
           mkdir -p /tmp/zh-tw-runtime
           printf '{"name":"n8n-zh-tw-isolated-smoke","version":"0.0.0","private":true}' > /tmp/zh-tw-runtime/package.json
           npm install --prefix /tmp/zh-tw-runtime --ignore-scripts --no-audit --no-fund --save-exact esbuild@0.28.1 vue@3.5.13 vue-i18n@11.4.4
-      - name: Compile all candidates and test actual locale switching
-        run: |
-          cp /tmp/zh-tw-candidates/packages/frontend/@n8n/i18n/src/locales/zh-TW.json packages/frontend/@n8n/i18n/src/locales/zh-TW.json
-          node scripts/i18n/runtime_smoke.cjs /tmp/zh-tw-runtime .
+      - name: Compile native candidate messages
+        run: node scripts/i18n/compile_native_zh_tw.cjs /tmp/zh-tw-runtime /tmp/zh-tw-candidates
+      - name: Compile all base messages and test actual locale switching
+        run: node scripts/i18n/runtime_smoke.cjs /tmp/zh-tw-runtime .
       - name: Upload candidate Git objects without modifying any ref
         env:
           GH_TOKEN: ${{ github.token }}
@@ -78,6 +81,9 @@ jobs:
               'localization/zh-TW/missing-base.json',
               'localization/zh-TW/technical-review.json',
               'localization/zh-TW/coverage.json',
+              'localization/zh-TW/native/nodes-base.json',
+              'localization/zh-TW/native/nodes-langchain.json',
+              'localization/zh-TW/native-coverage.json',
               'localization/vendor/melas-v0.3.0/LICENSE',
               'localization/vendor/melas-v0.3.0/NOTICE',
               'localization/vendor/melas-v0.3.0/PROVENANCE.md',
@@ -89,7 +95,7 @@ jobs:
           for name in sorted(allowed):
               path = root / name
               data = path.read_bytes()
-              if path.is_symlink() or len(data) > 8_000_000:
+              if path.is_symlink() or len(data) > 12_000_000:
                   raise SystemExit('產物型別或大小不符合限制。')
               expected = hashlib.sha1(f'blob {len(data)}\0'.encode() + data).hexdigest()
               body = json.dumps({'content': data.decode('utf-8'), 'encoding': 'utf-8'}).encode()
@@ -107,6 +113,6 @@ jobs:
           print('CANDIDATE_TREE_ELEMENTS=' + json.dumps(results, ensure_ascii=False))
           print('沒有建立 commit、移動分支或部署到主機。')
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
-              summary.write('## 繁中字典候選產物\n\n已上傳 Git 物件，但尚未更新任何分支。\n\n')
+              summary.write('## 繁中候選產物\n\n基礎字串必須完整通過；節點候選仍可能缺漏，不是完整 UI 或部署驗收。\n\n')
               summary.write('```json\n' + json.dumps(results, ensure_ascii=False, indent=2) + '\n```\n')
           PY
