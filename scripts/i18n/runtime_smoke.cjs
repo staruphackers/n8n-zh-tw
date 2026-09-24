@@ -31,6 +31,7 @@ async function main() {
     console.error('繁中訊息編譯錯誤：', JSON.stringify(syntaxErrors, null, 2));
     throw new Error(`${syntaxErrors.length} 項訊息編譯錯誤`);
   }
+  console.log(`PASS ${entries.length} 筆繁中訊息語法編譯`);
   const output = path.resolve(dependencyDirectory, 'n8n-i18n-under-test.cjs');
   await build({
     entryPoints: [path.join(root, 'packages/frontend/@n8n/i18n/src/index.ts')],
@@ -38,9 +39,12 @@ async function main() {
     bundle: true,
     platform: 'node',
     format: 'cjs',
+    tsconfigRaw: { compilerOptions: { target: 'ES2022' } },
     nodePaths: [path.resolve(dependencyDirectory, 'node_modules')],
     logLevel: 'warning',
   });
+  // 先在 Node.js 環境載入 Vue；本測試不模擬完整 DOM，也不呼叫 Vue 畫面渲染。
+  const { i18n, i18nInstance, setLanguage, addNodeTranslation, addCredentialTranslation, addHeaders } = require(output);
   let htmlLanguage;
   global.document = {
     querySelector: (selector) => {
@@ -48,7 +52,6 @@ async function main() {
       return { setAttribute: (name, value) => { assert.equal(name, 'lang'); htmlLanguage = value; } };
     },
   };
-  const { i18n, i18nInstance, setLanguage, addNodeTranslation, addCredentialTranslation, addHeaders } = require(output);
   const check = (name, fn) => { fn(); console.log(`PASS ${name}`); };
   check('保留英文預設', () => {
     assert.equal(i18n.locale, 'en');
