@@ -34,6 +34,22 @@ def read_json(path):
     return json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=reject_duplicates)
 
 
+def read_source(path):
+    # 沿用 JSON.parse 的後值優先行為，但明確揭露上游重複鍵；不修改原檔。
+    duplicates = []
+
+    def collect(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                duplicates.append({'key': key, 'same_value': result[key] == value})
+            result[key] = value
+        return result
+
+    data = json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=collect)
+    return data, duplicates
+
+
 def leaves(obj, path=()):
     if isinstance(obj, dict):
         result = {}
@@ -163,7 +179,11 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         directory = args.root / LOCALE_DIR
-        report = inspect(read_json(directory / 'en.json'), read_json(directory / 'zh-TW.json'))
+        source, duplicates = read_source(directory / 'en.json')
+        report = inspect(source, read_json(directory / 'zh-TW.json'))
+        report['source_duplicate_keys'] = duplicates
+        for duplicate in duplicates:
+            print(f"WARNING 上游重複鍵（未修改原檔）：{duplicate['key']}; 相同值={duplicate['same_value']}", file=sys.stderr)
         alias = directory / 'zh.json'
         if alias.exists() and read_json(alias) != read_json(directory / 'zh-TW.json'):
             raise ValueError('zh.json 相容語言檔必須與 zh-TW.json 完全一致')
