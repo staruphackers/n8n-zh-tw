@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/zh-tw-dictionary-build.yml'
       - 'scripts/i18n/import_mit_dictionary.py'
+      - 'scripts/i18n/runtime_smoke.cjs'
       - 'scripts/i18n/requirements-conversion.txt'
       - 'localization/zh-TW/overrides.json'
       - 'localization/zh-TW/patches/**'
@@ -38,6 +39,26 @@ jobs:
         run: /tmp/zh-tw-tools/bin/python -m unittest discover -s scripts/i18n -p 'test_*.py' -v
       - name: Build candidates from immutable MIT data only
         run: /tmp/zh-tw-tools/bin/python scripts/i18n/import_mit_dictionary.py --output /tmp/zh-tw-candidates --cache /tmp/zh-tw-source-cache
+      - name: Format review queues without changing values
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for name in ['missing-base.json', 'technical-review.json']:
+              path = Path('/tmp/zh-tw-candidates/localization/zh-TW') / name
+              entries = json.loads(path.read_text(encoding='utf-8'))
+              text = '[\n' + ',\n'.join(json.dumps(item, ensure_ascii=False) for item in entries) + '\n]\n'
+              path.write_text(text, encoding='utf-8')
+          PY
+      - name: Install isolated compatible frontend test dependencies
+        run: |
+          mkdir -p /tmp/zh-tw-runtime
+          printf '{"name":"n8n-zh-tw-isolated-smoke","version":"0.0.0","private":true}' > /tmp/zh-tw-runtime/package.json
+          npm install --prefix /tmp/zh-tw-runtime --ignore-scripts --no-audit --no-fund --save-exact esbuild@0.28.1 vue@3.5.13 vue-i18n@11.4.4
+      - name: Compile all candidates and test actual locale switching
+        run: |
+          cp /tmp/zh-tw-candidates/packages/frontend/@n8n/i18n/src/locales/zh-TW.json packages/frontend/@n8n/i18n/src/locales/zh-TW.json
+          node scripts/i18n/runtime_smoke.cjs /tmp/zh-tw-runtime .
       - name: Upload candidate Git objects without modifying any ref
         env:
           GH_TOKEN: ${{ github.token }}
